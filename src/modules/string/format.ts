@@ -7,4 +7,6 @@ const firstUpperCase = (message: string) => {
   return message.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
 };
 
+
+
 export { firstUpperCase };

@@ -1,6 +1,7 @@
 ### Node ###
 package-lock.json
 yarn.lock
+test
 # Logs
 logs
 *.log
