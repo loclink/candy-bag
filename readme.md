@@ -1,157 +1,199 @@
-# ToolsBase
+# CandyBag
 
-> ToolsBase是一个使用typescript而开发的起手式工具库开发模板和基础构建设施。
+candy-bag，一个`javascript`工具库。用了都说香。
 
-## 安装:
+## 安装：
 
-从该版本开始将不再推荐您使用`git clone`的方式安装本工具，请使用`locilc`脚手架工具安装：
-
-``` shell
-npm install locilc -g
-lic create my-utils
-```
-
-![locilc02](https://tva1.sinaimg.cn/large/0087ufIQgy1h46jyu4x7eg30jd0bpdm7.gif)
-
-如需了解其他关于`locilc`的操作请查阅：https://github.com/loclink/locilc
-
-使用`lic create <project>`将进入到创建列表选项中，选择`tools-base`将会自动帮助你创建项目并以`<project>`参数作为该项目的名称，选择`tools-base`选项后将会提示输入一个[umd模块](https://github.com/cumt-robin/umd-learning)的全局对象名称，**虽然该脚手架未对 `umdName` 的命名格式进行检测，但还请务必以驼峰或下划线的形式命名，否则在使用过程中会产生语法错误，**`locilc`会自动帮您安装`tools-base`的所属依赖，您无需自己手动操作。
-
-在项目创建完成后你还可以自行编辑`tools.config.json`文件对`umdName`进行修改：
-
-``` json
-{
-  "umdName":"myUtils"
-}
-```
-
-
-
-## 目录结构:
+使用`npm`或`yarn`包管理工具安装：
 
 ``` shell
-.
-├── lib # 核心库 - 您所有的工具函数都应放在此文件夹内
-│   ├── index.ts # 入口文件 - 打包程序将此文件作为入口，您的所有方法都应从此文件导出
-│   └── utils #工具方法放于此文件夹或其他新建文件夹
-│       └── higher-order.ts # 本身自带的两个方法 debounce 和 throttle
-├── package.json # 项目配置文件
-├── package-lock.json 
-├── readme.md # 描述文档
-├── rollup.config.js # rollup配置文件
-├── tools.config.json # tools-base的配置文件
-├── tsconfig.json # ts配置文件
-└── yarn.lock
+npm install candy-bag
 ```
 
-
-
-## 体验:
-
-`tools-base`本身自带两个方法`debounce`（防抖函数）、throttle（节流函数）并统一从`lib/index.ts`中导出。您可以尝试一下从`tools-base`打包并发布的体验版本，`tools-base`将所有导出的方法打包为`umd`模块，所以您可以使用`Commonjs`、`ESM`、`cdn`这三种方式来引入模块。
-
-- 安装体验库`tool-cat`
-
-``` shell
-npm install tool-cat
-```
-
-- 使用Commonjs方式导入：
+在`node`项目中使用`CommonJS`导入方式：
 
 ``` js
-const {debounce} = require('tool-cat');
-
-const foo = debounce(() => {
-  console.log('foo 被执行')
-}, 300)
-
-foo()
+const { firstUpperCase } = require('candy-bag')
 ```
 
-- 使用es6-module方式导入：
+在`webpack`或`vite`构建项目中使用ESM导入方式：
 
 ``` js
-import {debounce} from 'tool-cat'
-
-const foo = debounce(() => {
-  console.log('foo 被执行')
-}, 300)
-
-foo()
+import { firstUpperCase } from 'candy-bag'
 ```
 
-- 在html文件中使用`cdn`方式导入：
+在`html`静态页面中使用`cdn`方式导入，同过该方式导入，将暴露一个全局对象`CandyBag`所有的方法均可以从该对象中取出：
 
 ``` html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/tool-cat/index.js"></script>
-  </head>
-  <body>
-    <script>
-      // 这里通过全局对象utils调用方法
-      const foo = myUtils.debounce(
-        () => {
-          console.log('foo被执行');
-        },500);
-      foo();
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 通过cdn方式引入全局对象：CandyBag -->
+  <script src="https://cdn.jsdelivr.net/npm/candy-bag"></script>
+  <script>
+    const { firstUpperCase } = CandyBag
+    console.log(firstUpperCase('hello')) // Hello
+  </script>
+</body>
 </html>
-
 ```
 
 
 
-## 快速开始：
+## 快速使用：
 
-`tools-base`希望您使用`typescript`来开发您的工具库，这将为您的工具库提供更好的类型检测以及智能提示，所有需要导出的文件都需要放在`lib`文件夹下并通过`export`的方式统一从`index.ts`文件中导出。
+### "Array" Methods：
 
-### 1. 编写工具函数：
+1. 获取一个number数组的求和： `numArraySum`
 
-![image](https://tva1.sinaimg.cn/large/0087ufIQgy1h46kp331qkj30nk0gzgqz.jpg)
+   #### Arguments:
 
+   `array :Number[]`：需要处理的数组，要求必须为`number`类型组成，长度不限。
 
+   
 
-### 2. 导出函数：
+   #### Returns:
 
-![image](https://tva3.sinaimg.cn/large/0087ufIQgy1h46kqt6ys6j30t70gzafl.jpg)
+   `Number` ：数组的总和
 
+   
 
+   #### Example:
 
-### 3. cdn全局对象名称：
-
-`umd`模块必须拥有一个全局对象，您可以通过修改`tools.config.json`中的`umdName`属性配置全局对象名称。
-
-
-
-### 4. 打包：
-
-打包操作输出至`dist/index.js`自动将其编译为`es5`语法，并生成`.d.ts`类型声明文件。
-
-```  shell
-npm run build
+``` js
+import { numArraySum }  from 'candy-bag'
+console.log(numArraySum([99, -1, 20])) // 118
 ```
 
-![tools-base](https://tva3.sinaimg.cn/large/0087ufIQgy1h46kt0ybmbg30t60giqh3.gif)
 
 
+### "String"  Methods：
 
-### 5. 发布：
+1. 将字符串的首字母转化为大写： `firstUpperCase`
 
-发布之前您需要先使用`npm login`指令登录至仓库服务器，然后使用：
+   #### Arguments:
 
-``` shell
-npm run release
+   `message: String`：需要处理的字符串，由字母组成。
+
+   
+
+   #### Returns:
+
+   `String` ：首个字母被转化为大写的字符串
+
+   
+
+   #### Example:
+
+``` js
+import { firstUpperCase }  from 'candy-bag'
+console.log(firstUpperCase('hello')) // Hello
 ```
 
-该命令将会自动帮您把`dist`打包文件夹作为库发布至您的npm仓库中。发布成功之后您就可以在项目中使用 `npm install <packageName>`命令安装至项目或使用cdn的方式引入并使用了。
 
-发布后通过cdn引入方式可使用该地址：`https://cdn.jsdelivr.net/npm/包名称/index.js`
 
-使用`purge.jsdelivr.net/npm/包名称/`可刷新cdn缓存
+### "Higher" Methods：
+
+1. 防抖函数：`debounce`
+
+   #### Arguments:
+
+   `fn: Function`：需要被执行的函数体， 必传
+
+   `delay: Number`：每次触发函数延时多久，单位ms（毫秒），必传
+
+   `immed: Boolean`：是否在首次立即执行，可选
+
+   `resultCallback: Function`：执行后的回调函数，`(result) => void` 可从回调函数中拿到执行函数的返回值
+
+   
+
+   #### Returns:
+
+   `Promise <any>` ：返回`Promise`，从`then()`中可取出函数执行结果
+
+   
+
+   #### Example:
+
+``` js
+import { debounce }  from 'candy-bag'
+const foo = () => {
+  console.log('foo 函数被执行');
+};
+
+const fooDebounce = debounce(foo, 500, true);
+fooDebounce().then((res) => {
+  console.log(res); // "foo 函数被执行"
+});
+```
+
+
+
+2. 节流函数：`throttle`
+
+   #### Arguments:
+
+   `fn: Function`：需要被执行的函数体， 必传
+
+   `interval: Number`：每次触发间隔市场，单位ms（毫秒），必传
+
+   `options: { leading: Boolean;  trailing: Boolean; resultCallback?: (result: any) => void)}`：选项，可选。
+
+   - leading：是否立即执行 
+   - trailing：最后是否执行一次
+   - resultCallback：执行后的回调函数，`(result) => void` 可从回调函数中拿到执行函数的返回值
+
+   
+
+   #### Returns:
+
+   `Promise <any>` ：返回`Promise`，从`then()`中可取出函数执行结果
+
+   
+
+   #### Example:
+
+``` js
+import { throttle }  from 'candy-bag'
+
+const foo = () => {
+  return 'foo 函数被执行';
+};
+
+const fooThrottle = throttle(foo, 1000, {
+  leading: true,
+  trailing: false
+});
+
+fooThrottle().then(res => {
+  console.log(res) // "foo 函数被执行"
+})
+```
+
+
+
+## 关于：
+
+本项目基于[tools-base](https://github.com/loclink/tools-base)开发。
+
+**另招募大佬一起维护本项目。一起造轮子，我们不仅制造轮子，我们还要做轮子的搬运工**
+
+*联系方式：wx：coder7915*
+
+> 觉得还不戳的话请留下一个star吧~
+
+## 日志：
+
+### v0.0.3 更新于 2022/07/18：
+
+1. 加入数组求和方法
+2. 完善项目文档
+3. 完善部分参数类型
+
