@@ -1,12 +1,12 @@
 {
   "name": "candy-bag",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "",
   "main": "candy-bag.cjs.min.js",
   "module": "candy-bag.esm.min.js",
   "umd:mian": "candy-bag.js",
   "jsdelivr": "candy-bag.min.js",
-  "types": "index.d.ts",
+  "types": "src/index.d.ts",
   "scripts": {
     "build": "npm run clean && tsc && npm run build:dist && npm run copy",
     "build:dist": "rollup -c",
