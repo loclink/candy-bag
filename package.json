@@ -1,6 +1,6 @@
 {
   "name": "candy-bag",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "candy-bag.cjs.min.js",
   "module": "candy-bag.esm.min.js",
